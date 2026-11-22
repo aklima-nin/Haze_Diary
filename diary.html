@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Haze — дневник атмосферы дня · RIFT</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;700&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="diary.css"></head><body>
+<div class="glow" aria-hidden="true"></div>
+<header><div class="logo">Haze<small>by RIFT</small></div>
+<nav><span class="pill" aria-hidden="true"></span><button data-v="new" class="on">Записать день</button><button data-v="arch">Дневник</button></nav></header>
+<main>
+<section id="new" class="enter">
+<h1>Каким был твой день на ощупь?</h1>
+<p class="lead">Расскажи про день, добавь фото и песню. Haze соберёт из них воспоминание в стиле дня и положит его в папку дневника.</p>
+<div class="grid2">
+ <div class="panel">
+  <label>Дата</label><input type="date" id="dt">
+  <label>Как прошёл день</label><textarea id="tx" placeholder="Гуляли по парку, всё в жёлтых листьях, было холодно, но мы пили какао и долго разговаривали…"></textarea>
+  <div class="hint" id="mh"></div>
+  <label>Фотографии (до 4)</label><input type="file" id="ph" accept="image/*" multiple><div class="thumbs" id="th"></div>
+ </div>
+ <div class="panel">
+  <label>Песня дня: название</label><input id="sn" placeholder="Fly Me to the Moon">
+  <div class="row2"><div><label>Исполнитель</label><input id="sa" placeholder="Frank Sinatra"></div><div><label>Год песни</label><input id="sy" type="number" min="1800" max="2100" placeholder="1964"></div></div>
+  <label>Ссылка на песню (Spotify, YouTube, Яндекс Музыка…)</label><input id="sl" type="url" placeholder="https://">
+  <label>Или свой аудиофайл (до 15 МБ)</label><input type="file" id="au" accept="audio/*"><div class="hint" id="ah">Из файла темп, энергия и лад определятся сами. Для ссылки задай их по ощущению песни: баллада ~70 BPM, поп ~120, электроника ~128.</div>
+  <div class="row"><div><label>Темп, BPM</label><input type="number" id="bp" value="100" min="40" max="220"></div>
+  <div><label>Лад</label><select id="md"><option value="major">Мажор</option><option value="minor">Минор</option></select></div>
+  <div><label>Энергия</label><select id="en"><option value=".25">Тихая</option><option value=".55" selected>Средняя</option><option value=".85">Мощная</option></select></div></div>
+  <div class="acts"><button class="pri" id="go">Добавить воспоминание в дневник</button></div>
+  <div class="hint" id="st"></div>
+ </div>
+</div>
+</section>
+<section id="arch" hidden>
+<h1>Дневник</h1>
+<div class="bar"><input id="q" placeholder="Найти день по названию или слову…"><button id="demo">Добавить 5 демо-дней</button></div>
+<div id="cards"></div>
+</section>
+</main>
+<footer>Haze угадывает настроение по словам и музыке. Это художественный приём, а не психологическая или медицинская оценка. Все записи хранятся только в этом браузере.</footer>
+<div id="modal"><div class="vwrap"><div id="v"></div></div></div>
+<script src="diary.js"></script></body></html>

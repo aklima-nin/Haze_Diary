@@ -1,0 +1,155 @@
+/* Haze · RIFT — стили. Палитра сайта плавно перетекает вместе с настроением дня. */
+*,*::before,*::after{box-sizing:border-box;margin:0}[hidden]{display:none!important}
+
+/* ---------- палитры настроений ---------- */
+@property --bg{syntax:'<color>';inherits:true;initial-value:#1b1530}
+@property --card{syntax:'<color>';inherits:true;initial-value:#261d40}
+@property --ink{syntax:'<color>';inherits:true;initial-value:#f4eefa}
+@property --mut{syntax:'<color>';inherits:true;initial-value:#b4a8cf}
+@property --ac{syntax:'<color>';inherits:true;initial-value:#ff9f6e}
+@property --ac2{syntax:'<color>';inherits:true;initial-value:#7c9cff}
+@property --ac3{syntax:'<color>';inherits:true;initial-value:#4fe0c0}
+body{--bg:#1b1530;--card:#261d40;--ink:#f4eefa;--mut:#b4a8cf;--ac:#ff9f6e;--ac2:#7c9cff;--ac3:#4fe0c0;--ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.2,.9,.25,1.25);
+ background:var(--bg);color:var(--ink);font:16px/1.55 Manrope,system-ui,sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+ transition:--bg .9s,--card .9s,--ink .9s,--mut .9s,--ac .9s,--ac2 .9s,--ac3 .9s}
+body[data-mood=joy]{--bg:#33123f;--card:#47195a;--ink:#fff7ee;--mut:#f5c9dc;--ac:#ffc233;--ac2:#ff5d9b;--ac3:#2fe0c8}
+body[data-mood=calm]{--bg:#1d2a22;--card:#273a2e;--ink:#f6f1e4;--mut:#bcd0b4;--ac:#f4b860;--ac2:#8fd18b;--ac3:#e6d59a}
+body[data-mood=tense]{--bg:#0a0f24;--card:#121a3d;--ink:#e9eeff;--mut:#8fa0d6;--ac:#4f8cff;--ac2:#ff4fa3;--ac3:#22e3d0}
+body[data-mood=angry]{--bg:#240808;--card:#3a0f0f;--ink:#ffeceb;--mut:#e0a29c;--ac:#ff3b30;--ac2:#ff8a3d;--ac3:#ffd166}
+body[data-mood=sad]{--bg:#1c222b;--card:#262e39;--ink:#e1e8ef;--mut:#8f9fb2;--ac:#86a8cc;--ac2:#a7b4c4;--ac3:#6f8299}
+
+/* ---------- живой фон: аврора, свет за курсором, плёночное зерно ---------- */
+body::before{content:'';position:fixed;inset:-25%;z-index:-2;pointer-events:none;
+ background:radial-gradient(40% 35% at 15% 20%,color-mix(in srgb,var(--ac) 40%,transparent),transparent),radial-gradient(35% 30% at 85% 15%,color-mix(in srgb,var(--ac2) 36%,transparent),transparent),radial-gradient(45% 35% at 70% 90%,color-mix(in srgb,var(--ac3) 30%,transparent),transparent);
+ filter:blur(20px);animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{33%{transform:translate(4%,-3%) rotate(4deg) scale(1.06)}66%{transform:translate(-3%,3%) rotate(-3deg) scale(1.1)}to{transform:translate(2%,2%) scale(1.04)}}
+.glow{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(520px circle at var(--cx,50%) var(--cy,25%),color-mix(in srgb,var(--ac) 18%,transparent),transparent 65%)}
+body::after{content:'';position:fixed;inset:-50%;z-index:40;pointer-events:none;opacity:.08;mix-blend-mode:overlay;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+ animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-2%,3%)}80%{transform:translate(4%,1%)}to{transform:translate(0,0)}}
+
+/* ---------- шапка ---------- */
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:14px clamp(16px,4vw,48px);position:sticky;top:0;z-index:5;
+ background:color-mix(in srgb,var(--bg) 55%,transparent);backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid rgba(255,255,255,.06);animation:rise .8s var(--ease) backwards}
+.logo{font:600 30px 'Cormorant Garamond',serif;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
+.logo::before{content:'';width:12px;height:12px;border-radius:50%;background:conic-gradient(from 0deg,var(--ac),var(--ac2),var(--ac3),var(--ac));box-shadow:0 0 18px var(--ac);animation:spin 6s linear infinite,breathe 3s ease-in-out infinite}
+.logo small{font:500 12px Manrope;color:var(--mut);letter-spacing:.08em;text-transform:uppercase}
+nav{position:relative;display:flex;gap:2px;padding:4px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px)}
+nav .pill{position:absolute;top:4px;bottom:4px;left:0;width:var(--pw,0);transform:translateX(var(--px,4px));border-radius:99px;background:linear-gradient(120deg,var(--ac),var(--ac2));box-shadow:0 8px 28px -8px var(--ac);transition:transform .55s var(--spring),width .55s var(--spring)}
+nav button{position:relative;z-index:1;border:0;background:transparent;padding:9px 18px}
+nav button:hover{background:transparent;color:var(--ink);transform:none}
+nav button.on,nav button.on:hover{background:transparent;color:#140e1a;font-weight:700;box-shadow:none}
+
+/* ---------- кнопки ---------- */
+button,.btn{font:inherit;cursor:pointer;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:var(--ink);padding:10px 18px;border-radius:99px;text-decoration:none;display:inline-block;
+ transition:transform .35s var(--spring),background .25s,color .25s,border-color .25s,box-shadow .35s}
+button:hover,.btn:hover{background:color-mix(in srgb,var(--ac) 22%,rgba(255,255,255,.06));border-color:color-mix(in srgb,var(--ac) 60%,transparent);transform:translateY(-2px);box-shadow:0 10px 30px -12px var(--ac)}
+button:active,.btn:active{transform:scale(.96);transition-duration:.1s}
+button.pri{border:0;color:#140e1a;font-weight:700;background:linear-gradient(110deg,var(--ac),var(--ac2),var(--ac3),var(--ac));background-size:300% 100%;animation:flow 7s linear infinite;box-shadow:0 14px 34px -14px var(--ac)}
+button.pri:hover{background:linear-gradient(110deg,var(--ac),var(--ac2),var(--ac3),var(--ac));background-size:300% 100%;color:#140e1a;box-shadow:0 18px 44px -12px var(--ac2)}
+button.dng:hover{background:#e5576b;border-color:#e5576b;color:#fff;box-shadow:0 10px 30px -12px #e5576b}
+button:disabled{opacity:.7;cursor:progress}
+button.loading::after{content:'';display:inline-block;width:14px;height:14px;margin-left:10px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:-2px;animation:spin .7s linear infinite}
+button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ac2);outline-offset:3px}
+
+/* ---------- раскладка и типографика ---------- */
+main{max-width:1100px;margin:auto;padding:20px clamp(16px,4vw,48px) 80px}
+h1{font:600 clamp(42px,8.5vw,92px)/.95 'Cormorant Garamond',serif;letter-spacing:-.02em;margin:22px 0 14px;padding-bottom:.06em;
+ background:linear-gradient(100deg,var(--ink) 0%,var(--ink) 30%,var(--ac) 48%,var(--ac2) 62%,var(--ink) 82%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 9s ease-in-out infinite alternate}
+.lead{color:var(--mut);max-width:620px;margin-bottom:28px;font-size:17px}
+h2{font:600 clamp(32px,6vw,48px)/1.02 'Cormorant Garamond',serif;letter-spacing:-.01em;margin:14px 0 8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{position:relative;background:color-mix(in srgb,var(--card) 60%,transparent);backdrop-filter:blur(18px) saturate(1.2);border:1px solid color-mix(in srgb,var(--ac) 20%,rgba(255,255,255,.08));border-radius:26px;padding:24px;
+ box-shadow:0 30px 70px -40px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.07);transition:border-color .4s,box-shadow .4s}
+.panel:focus-within{border-color:color-mix(in srgb,var(--ac) 50%,transparent);box-shadow:0 30px 80px -36px color-mix(in srgb,var(--ac) 60%,transparent),inset 0 1px 0 rgba(255,255,255,.08)}
+
+/* появление экранов: лёгкий подъём из размытия, по очереди */
+.enter>*{animation:rise .8s var(--ease) backwards}
+.enter>h1{animation:rise .8s var(--ease) backwards,shine 9s ease-in-out 1s infinite alternate}
+.enter>:nth-child(2){animation-delay:.08s}.enter>:nth-child(3){animation-delay:.16s}
+.enter .panel{animation:rise .9s var(--ease) .2s backwards}.enter .panel+.panel{animation-delay:.32s}
+
+/* ---------- форма ---------- */
+label{display:block;font-size:12px;font-weight:500;color:var(--mut);margin:16px 0 7px;letter-spacing:.04em;text-transform:uppercase}
+input,textarea,select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:var(--ink);padding:12px 14px;border-radius:14px;font:inherit;transition:border-color .25s,box-shadow .3s,background .25s}
+input:hover,textarea:hover,select:hover{border-color:color-mix(in srgb,var(--ac2) 60%,transparent)}
+input:focus,textarea:focus,select:focus{background:rgba(255,255,255,.08);border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 22%,transparent)}
+textarea{min-height:180px;resize:vertical;line-height:1.6}select option{color:#000}
+input[type=file]{padding:8px;cursor:pointer}
+input[type=file]::file-selector-button{font:inherit;font-weight:600;margin-right:12px;padding:8px 14px;border:0;border-radius:99px;cursor:pointer;color:#140e1a;background:linear-gradient(120deg,var(--ac),var(--ac2));transition:filter .2s}
+input[type=file]::file-selector-button:hover{filter:brightness(1.1)}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.row2{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.thumbs img,.bad{width:72px;height:72px;object-fit:cover;border-radius:14px;animation:pop .5s var(--spring) backwards;box-shadow:0 8px 20px -10px #000}
+.thumbs>:nth-child(2){animation-delay:.07s}.thumbs>:nth-child(3){animation-delay:.14s}.thumbs>:nth-child(4){animation-delay:.21s}
+.bad{display:inline-flex;align-items:center;justify-content:center;font-size:11px;text-align:center;background:#e5576b33;color:var(--ink)}
+.hint{font-size:12px;color:var(--mut);margin-top:7px;transition:color .4s}
+#mh{color:color-mix(in srgb,var(--ac) 70%,var(--mut))}
+#st:not(:empty){animation:rise .4s var(--ease) backwards}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+
+/* ---------- архив ---------- */
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.bar input{flex:1;min-width:180px;border-radius:99px;padding-left:18px}
+#cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;margin-top:22px;perspective:1200px}
+.card{--c:var(--ac);--rx:0deg;--ry:0deg;--ty:0px;position:relative;font:inherit;color:inherit;text-align:left;padding:0;width:100%;cursor:pointer;overflow:hidden;
+ background:color-mix(in srgb,var(--card) 70%,transparent);border-radius:22px;border:1px solid rgba(255,255,255,.08);border-top:3px solid var(--c);
+ transform:translateY(var(--ty)) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .45s var(--ease),box-shadow .45s,border-color .3s;
+ animation:rise .75s var(--ease) backwards;animation-delay:calc(var(--i,0) * 70ms)}
+.card:hover{--ty:-6px;background:color-mix(in srgb,var(--card) 70%,transparent);color:var(--ink);border-color:color-mix(in srgb,var(--c) 70%,transparent);box-shadow:0 30px 60px -30px color-mix(in srgb,var(--c) 70%,#000)}
+.card[data-m=joy]{--c:#ffc233}.card[data-m=calm]{--c:#8fd18b}.card[data-m=tense]{--c:#4f8cff}.card[data-m=sad]{--c:#8da3b8}.card[data-m=angry]{--c:#ff3b30}
+.card::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.2),transparent 45%);opacity:0;transition:opacity .35s}
+.card:hover::after{opacity:1}
+.card img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block;transition:transform 1s var(--ease)}
+.card:hover img{transform:scale(1.05)}
+.card div{padding:12px 16px 16px}
+.card b{font:600 21px/1.15 'Cormorant Garamond',serif;display:block}.card span{font-size:12px;color:var(--mut)}
+
+/* ---------- просмотр дня ---------- */
+#modal{position:fixed;inset:0;z-index:20;overflow:auto;padding:18px;display:none;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(26px) saturate(1.2)}
+#modal.open{display:block;animation:fade .35s ease backwards}
+#modal.open .vwrap{animation:pop .7s var(--spring) backwards}
+.vwrap{max-width:580px;margin:auto}
+.track{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;border-radius:20px}
+.track::-webkit-scrollbar{display:none}
+.track img{flex:0 0 100%;width:100%;scroll-snap-align:center;border-radius:20px;box-shadow:0 30px 60px -30px #000;
+ transform:scale(.9);opacity:.45;filter:saturate(.6) blur(1px);transition:transform .8s var(--ease),opacity .8s,filter .8s}
+.track img.cur{transform:none;opacity:1;filter:none}
+.track.album{display:grid;grid-template-columns:1fr 1fr;overflow:visible}
+.track.album img{transform:none;opacity:1;filter:none;animation:pop .5s var(--spring) backwards}
+.prog{height:3px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden;margin:14px 0 0}
+.prog i{display:block;height:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--ac),var(--ac2));box-shadow:0 0 12px var(--ac)}
+.nv{display:flex;justify-content:center;align-items:center;gap:12px;margin:12px 0}
+.nv button{width:44px;height:44px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.dot{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,.25);display:inline-block;margin:0 3px;transition:width .4s var(--spring),background .3s}
+.dot.on{width:24px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
+.tag{display:inline-block;font-size:12px;padding:4px 11px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--mut);margin:0 6px 6px 0;animation:pop .5s var(--spring) backwards}
+.tag:nth-child(2){background:color-mix(in srgb,var(--ac) 28%,transparent);color:var(--ink);animation-delay:.08s}
+.tag:nth-child(3){background:color-mix(in srgb,var(--ac2) 28%,transparent);color:var(--ink);animation-delay:.16s}
+.now{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+/* эквалайзер дышит в темпе песни дня: --beat = 60 / BPM */
+.eq{display:inline-flex;align-items:flex-end;gap:3px;height:18px}
+.eq i{width:3px;height:100%;border-radius:2px;background:linear-gradient(var(--ac2),var(--ac));transform-origin:bottom;animation:eq var(--beat,.6s) ease-in-out infinite alternate}
+.eq i:nth-child(2){animation-delay:calc(var(--beat,.6s) * -.5)}.eq i:nth-child(3){animation-delay:calc(var(--beat,.6s) * -.25)}.eq i:nth-child(4){animation-delay:calc(var(--beat,.6s) * -.75)}
+.why{padding:0;list-style:none}
+.why li{position:relative;margin:8px 0;padding-left:18px;color:var(--mut);font-size:14px;animation:rise .6s var(--ease) backwards;animation-delay:calc(.35s + var(--i,0) * 70ms)}
+.why li::before{content:'';position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--ac)}
+audio{width:100%;margin-top:10px;border-radius:99px}
+
+footer{max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,48px) 40px;font-size:12px;color:var(--mut);opacity:.85}
+
+/* ---------- ключевые кадры ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(26px);filter:blur(8px)}}
+@keyframes pop{from{opacity:0;transform:translateY(30px) scale(.94);filter:blur(8px)}}
+@keyframes fade{from{opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{50%{box-shadow:0 0 30px var(--ac2)}}
+@keyframes shine{from{background-position:100% 0}to{background-position:0 0}}
+@keyframes flow{to{background-position:300% 0}}
+@keyframes eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
+@keyframes prog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+@media(max-width:760px){.grid2{grid-template-columns:1fr}.row{grid-template-columns:1fr}h1{margin-top:14px}}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important}
+ .track img{transform:none;opacity:1;filter:none}.prog{display:none}}
